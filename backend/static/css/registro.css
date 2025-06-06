@@ -1,0 +1,157 @@
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-height: 50px;
+    margin-right: 15px;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+form {
+    margin-top: 15px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+label {
+    display: block;
+    margin-bottom: 3px;
+    color: #555;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 8px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: color 0.3s ease; 
+}
+
+input[type="text"]:disabled {
+    color: #555; 
+    background-color: #eee;
+    cursor: not-allowed; 
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-size: 1em;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: 20%;
+    background-position-y: center;
+    cursor: pointer;
+}
+
+select::-ms-expand {
+    display: none;
+}
+.login {
+    background-color: red;
+}
+.login:hover {
+    background-color: darkred;
+}
+textarea {
+    width: calc(100% - 8px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-size: 1em;
+    resize: vertical;
+    min-height: 40px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"] {
+    background-color: #5cb85c; 
+}
+
+button[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+.autorizacion-button {
+    background-color: #007bff; 
+}
+
+.autorizacion-button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: #d9534f;
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.confirmation-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+    padding: 8px;
+    border-radius: 3px;
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.9em;
+}

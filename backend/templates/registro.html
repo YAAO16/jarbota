@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia a Visita</title>
+    <link rel="stylesheet" href="css/registro.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo_jardin.png" alt="Logo del Instituto" class="logo">
+            <h1>INSTITUTO TECNOLOGICO DEL PUTUMAYO</h1>
+        </div>
+        <center><h4>Registro de visita a jardin botanico tropical amazonico "JARBOTA"</h4></center>
+        <form action="/registro" method="POST" id="registroForm">
+            <div class="grid-container">
+                <div class="form-group">
+                    <label for="numero_documento">Número de Documento:</label>
+                    <input type="text" id="numero_documento" name="numero_documento" onblur="buscarPersona()">
+                </div>
+                <div class="form-group">
+                    <label for="nombrecompleto">Nombre Completo:</label>
+                    <input type="text" id="nombrecompleto" name="nombrecompleto" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipo_persona">Tipo de Persona:</label>
+                    <select id="tipo_persona" name="tipo_persona" required>
+                        <option value="">Seleccionar</option>
+                        <option value="Estudiante">Estudiante</option>
+                        <option value="Docente">Docente</option>
+                        <option value="Administrativo">Administrativo</option>
+                        <option value="Externo">Externo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vinculacion_facultad">Facultad:</label>
+                    <select id="vinculacion_facultad" name="vinculacion_facultad">
+                        <option value="">Seleccionar</option>
+                        <option value="INGENIERIA AMBIENTAL">INGENIERIA AMBIENTAL</option>
+                        <option value="INGENIERIA CIVIL">INGENIERIA CIVIL</option>
+                        <option value="INGENIERIA FORESTAL">INGENIERIA FORESTAL</option>
+                        <option value="INGENIERIA DE SISTEMAS">INGENIERIA DE SISTEMAS</option>
+                        <option value="INGENIERIA AGROINDUSTRIAL">INGENIERIA AGROINDUSTRIAL</option>
+                        <option value="CONTADURIA PUBLICA">CONTADURIA PUBLICA</option>
+                        <option value="ADMINISTRACION DE EMPRESAS">ADMINISTRACION DE EMPRESAS</option>
+                        <option value="NEGOCIOS INTERNACIONALES">NEGOCIOS INTERNACIONALES</option>
+                        <option value="NO PERTENECE A NINGUNA">NO PERTENECE A NINGUNA</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vinculacion_semestre">Semestre:</label>
+                    <select id="vinculacion_semestre" name="vinculacion_semestre">
+                        <option value="">Seleccionar</option>
+                        <option value="I">I</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                        <option value="VI">VI</option>
+                        <option value="VII">VII</option>
+                        <option value="VIII">VIII</option>
+                        <option value="IX">IX</option>
+                        <option value="X">X</option>
+                        <option value="No Aplica">No Aplica</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vinculacion_institucion">Institución:</label>
+                    <input type="text" id="vinculacion_institucion" name="vinculacion_institucion" placeholder="Nombre de la Institución">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono">
+                </div>
+                <div class="form-group">
+                    <label for="actividad_desarrollada">Actividad Desarrollada:</label>
+                    <select id="actividad_desarrollada" name="actividad_desarrollada">
+                        <option value="">Seleccionar</option>
+                        <option value="practica academica">Práctica Académica</option>
+                        <option value="turismo">Turismo</option>
+                        <option value="reconocimiento">Reconocimiento</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="codigo_visita">Código de Visita:</label>
+                    <input type="text" id="codigo_visita" name="codigo_visita">
+                </div>
+            </div>
+            <div class="button-container">
+                <button type="submit">Registrar Asistencia</button>
+                <button type="button" class="autorizacion-button" onclick="window.location.href='/autorizacion'">Ir a Autorizaciones</button>
+                <button type="button" class="login" onclick="window.location.href='/login'">Admin</button>
+            </div>
+        </form>
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+        {% if mensaje %}
+            <div class="confirmation-message" id="confirmationAlert">
+                {{ mensaje }}
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('confirmationAlert').style.display = 'none';
+                    document.getElementById('registroForm').reset();
+                }, 3000);
+            </script>
+        {% endif %}
+
+        <script>
+            function buscarPersona() {
+                const numeroDocumento = document.getElementById('numero_documento').value;
+                if (numeroDocumento) {
+                    fetch('/buscar_persona', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `numero_documento=${numeroDocumento}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            document.getElementById('nombrecompleto').value = data.nombrecompleto || '';
+                            document.getElementById('tipo_persona').value = data.tipo_persona || '';
+                            document.getElementById('vinculacion_facultad').value = data.vinculacion_facultad || '';
+                            document.getElementById('vinculacion_institucion').value = data.vinculacion_institucion || '';
+                            document.getElementById('telefono').value = data.telefono || '';
+                        } else {
+                            // Limpiar los campos si no se encuentra el documento (opcional, puedes dejar los campos vacíos)
+                            document.getElementById('nombrecompleto').value = '';
+                            document.getElementById('tipo_persona').value = '';
+                            document.getElementById('vinculacion_facultad').value = '';
+                            document.getElementById('vinculacion_institucion').value = '';
+                            document.getElementById('telefono').value = '';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al buscar persona:', error);
+                    });
+                } else {
+                    // Limpiar los campos si el número de documento está vacío (opcional)
+                    document.getElementById('nombrecompleto').value = '';
+                    document.getElementById('tipo_persona').value = '';
+                    document.getElementById('vinculacion_facultad').value = '';
+                    document.getElementById('vinculacion_institucion').value = '';
+                    document.getElementById('telefono').value = '';
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const actividadDesarrolladaSelect = document.getElementById('actividad_desarrollada');
+                const codigoVisitaInput = document.getElementById('codigo_visita');
+
+                function actualizarEstadoCodigoVisita() {
+                    const actividadSeleccionada = actividadDesarrolladaSelect.value;
+                    if (actividadSeleccionada === 'turismo' || actividadSeleccionada === 'reconocimiento') {
+                        codigoVisitaInput.disabled = true;
+                        codigoVisitaInput.value = '';
+                    } else {
+                        codigoVisitaInput.disabled = false;
+                    }
+                }
+
+                actualizarEstadoCodigoVisita();
+
+                actividadDesarrolladaSelect.addEventListener('change', actualizarEstadoCodigoVisita);
+            });
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+Flask
+Flask-CORS
+xhtml2pdf
+mysql-connector-python
+openpyxl
+reportlab
+Werkzeug

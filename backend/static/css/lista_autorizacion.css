@@ -1,0 +1,300 @@
+ body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 20px; /* Añadido padding al body para más espacio alrededor del contenedor */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 16px;
+}
+
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px; /* Bordes más redondeados para un look moderno */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra más sutil y moderna */
+  width: 95%; /* Un poco más de ancho para mejor aprovechamiento en pantallas grandes */
+  max-width: 1400px; /* Aumentado el max-width para pantallas más grandes */
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 25px; /* Más espacio debajo del título */
+  font-size: 28px; /* Título un poco más grande */
+  font-weight: bold; /* Título en negrita para destacar */
+}
+
+.header-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px; /* Más espacio entre los botones y los controles de ordenamiento */
+  justify-content: flex-end; /* Alineación de los botones a la derecha */
+}
+
+.btn-cerrar-sesion{
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 12px 20px; /* Más padding para botones más grandes */
+  border-radius: 6px; /* Bordes de botón más redondeados */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Sutil sombra en los botones */
+}
+.btn-generar-excel {
+  background-color: green; /* Color primario más profesional */
+  color: white;
+  border: none;
+  padding: 12px 20px; /* Más padding para botones más grandes */
+  border-radius: 6px; /* Bordes de botón más redondeados */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Sutil sombra en los botones */
+}
+
+.btn-cerrar-sesion:hover {
+  background-color: red; /* Oscurecimiento al pasar el ratón */
+}
+
+.btn-generar-excel:hover {
+  background-color: green; /* Mismo efecto hover para consistencia */
+}
+
+.ordering-controls {
+  display: flex;
+  gap: 25px; /* Más espacio entre los elementos de control */
+  margin-bottom: 30px;
+  align-items: center;
+  background-color: #f8f9fa; /* Fondo ligeramente más claro */
+  padding: 20px; /* Más padding dentro del contenedor de controles */
+  border-radius: 8px;
+  border: 1px solid #e0e0e0; /* Borde sutil para el contenedor */
+}
+
+.ordering-controls label {
+  font-weight: bold;
+  color: #495057;
+}
+
+.ordering-controls select {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 16px;
+  flex-grow: 1; /* Permite que los selects ocupen más espacio horizontal */
+  min-width: 150px; /* Ancho mínimo para los selects */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Sombra más suave para la tabla */
+  border-radius: 12px; /* Bordes redondeados para la tabla */
+  overflow: hidden; /* Asegura que los bordes redondeados se apliquen correctamente */
+  font-size: 15px; /* Ligeramente más grande para mejor lectura */
+}
+
+thead {
+  background-color: #343a40;
+  color: white;
+  font-size: 16px;
+  text-align: left; /* Asegura la alineación a la izquierda en todos los navegadores */
+}
+
+th {
+  padding: 15px; /* Más padding para las cabeceras */
+  font-weight: bold; /* Cabeceras en negrita */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+td {
+  padding: 12px 15px; /* Más padding para las celdas */
+  border-bottom: 1px solid #dee2e6;
+}
+
+td span[class^="estado-"] {
+  display: inline-block;
+  padding: 8px 12px; /* Ajuste del padding de los estados */
+  border-radius: 8px; /* Bordes más redondeados para los estados */
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.estado-aceptada {
+  background-color: #e2f3e5; /* Verde más suave */
+  color: #1a6330; /* Verde oscuro */
+  border: 1px solid #c3e6cb; /* Borde sutil */
+}
+
+.estado-pendiente {
+  background-color: #fff8e1; /* Amarillo más suave */
+  color: #85640a;
+  border: 1px solid #ffeeba; /* Borde sutil */
+}
+
+.estado-rechazada {
+  background-color: #fdecea; /* Rojo más suave */
+  color: #721c24;
+  border: 1px solid #f5c6cb; /* Borde sutil */
+}
+
+td form {
+  display: flex;
+  flex-direction: row; /* Cambiado a fila para botones uno al lado del otro */
+  gap: 10px; /* Espacio entre los botones */
+  align-items: center; /* Alineación vertical de los elementos del formulario */
+}
+
+td form button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px; /* Ajuste del padding de los botones de acción */
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+td form button[value="Rechazada"] {
+  background-color: #dc3545;
+}
+
+td form button:hover {
+  opacity: 0.9;
+}
+
+td form textarea {
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  flex-grow: 1; /* Permite que el textarea ocupe más espacio si es necesario */
+}
+
+td a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: bold; /* Enlace "Ver Detalle" en negrita */
+}
+
+td a:hover {
+  color: #0056b3;
+}
+
+.pagination-controls {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center; /* Centrar los controles de paginación */
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-controls a, .pagination-controls span {
+  display: inline-block;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-controls a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination-controls span.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* Ajustado el margen superior */
+  padding: 30px; /* Más padding en el modal */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  border-radius: 12px; /* Bordes redondeados para el modal */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para el modal */
+  position: relative;
+}
+
+.close-button {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-buttons, .date-picker-container {
+  margin-bottom: 20px; /* Más espacio entre los elementos del modal */
+}
+
+.modal-buttons label, .date-picker-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #495057;
+}
+
+.modal-buttons select, .date-picker-container input[type="date"] {
+  padding: 12px; /* Más padding para los inputs del modal */
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-buttons select {
+  width: auto; /* Ajusta el ancho del select al contenido */
+}
+
+.modal-content center button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 16px; /* Tamaño de fuente más grande para el botón del modal */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Sutil sombra en el botón del modal */
+}
+
+.modal-content center button:hover {
+  background-color: #1e7e34;
+}

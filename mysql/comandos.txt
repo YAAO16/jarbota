@@ -1,0 +1,16 @@
+COMANDO PARA LA BASE DE DATOS MYSQL
+------------------------------------
+docker run -d --name asistencia --network practicas -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=asistencia -v ${PWD}/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql -p 3306:3306 mysql:5.7
+
+COMANDO PARA EL PROYECTO
+------------------------
+docker build --force-rm -t BackendAsis/latest . --no-cache
+docker run -p 5010:5000 -d --name BackendAsis BackendAsis/latest:latest
+docker network connect practicas BackendAsis
+
+COMANDO
+-------
+pip install python-dotenv
+pip install pymysql
+
+

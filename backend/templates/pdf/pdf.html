@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Autorización de Ingreso</title>
+    <style>
+        body { font-family: sans-serif; font-size: 12px; }
+        .container { width: 100%; }
+        .header { text-align: center; margin-bottom: 10px; }
+        .header img { max-width: 100px; height: auto; }
+        .info-box { border: 1px solid #ccc; padding: 5px; margin-bottom: 5px; }
+        .label { font-weight: bold; }
+        .grid-row { display: flex; gap: 10px; margin-bottom: 5px; }
+        .col { flex: 1; }
+        .full-width { width: 100%; }
+        .recommendations { margin-top: 10px; border: 1px solid #ccc; padding: 5px; font-size: 10px; }
+        .footer { margin-top: 20px; text-align: center; font-size: 8pt; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo_jardin.png" alt="Logo Jardín">
+            <p>MACROPROCESO MISIONAL</p>
+            <p>PROCESO: DOCENCIA</p>
+            <p>FORMATO SOLICITUD DE AUTORIZACIÓN PARA INGRESO</p>
+            <p>F-JB-001 - VERSIÓN: 01 - Página 1 de 1</p>
+        </div>
+
+        <div class="info-box">
+            <div class="grid-row">
+                <div class="col"><span class="label">NOMBRE DEL RESPONSABLE:</span> {{ autorizacion.nombreresponsable or 'N/A' }}</div>
+                <div class="col"><span class="label">IDENTIFICACIÓN:</span> {{ autorizacion.identificacion or 'N/A' }}</div>
+                <div class="col"><span class="label">OCUPACIÓN:</span> {{ autorizacion.ocupacion or 'N/A' }}</div>
+            </div>
+            <div class="grid-row">
+                <div class="col"><span class="label">ENTIDAD:</span> {{ autorizacion.entidad or 'N/A' }}</div>
+                <div class="col full-width"><span class="label">DIRECCIÓN / BARRIO:</span> {{ autorizacion.direccion_barrio or 'N/A' }}</div>
+            </div>
+            <div class="grid-row">
+                <div class="col"><span class="label">MUNICIPIO:</span> {{ autorizacion.municipio or 'N/A' }}</div>
+                <div class="col"><span class="label">No. TELEFÓNICO:</span> {{ autorizacion.telefono or 'N/A' }}</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p><span class="label">OBJETIVO DE LA PRACTICA O VISITA:</span><br>{{ autorizacion.objetivovisita or 'N/A' | nl2br }}</p>
+        </div>
+
+        <div class="info-box">
+            <p><span class="label">Número de personas que ingresan:</span> {{ autorizacion.numeropersonas or 'N/A' }}</p>
+            <p><span class="label">Facultad - Semestre - Institución:</span> {{ autorizacion.vinculacion|nl2br }}</p>
+            <p><span class="label">Hora de llegada:</span> {{ autorizacion.hora_llegada.strftime('%H:%M:%S') if autorizacion.hora_llegada else 'N/A' }} <span class="label">Hora de salida:</span> {{ autorizacion.hora_salida.strftime('%H:%M:%S') if autorizacion.hora_salida else 'N/A' }}</p>
+        </div>
+
+        <div class="recommendations">
+            <p class="label">Recomendaciones:</p>
+            <p>- No salirse de los senderos para evitar cualquier tipo de accidente.</p>
+            <p>- Disponga de ropa adecuada para el recorrido o permanencia (Pantalón largo, sudadera, gorra, tenis botas).</p>
+            <p>- En tiempo de invierno utilizar preferiblemente botas pantaneras.</p>
+            <p>- No extraer material vegetal ni semillas del Jardín Botánico.</p>
+            <p>- No arrojar basura en los senderos durante el recorrido.</p>
+            <p>- No cazar.</p>
+            <p>- No realizar fogatas o incendios.</p>
+        </div>
+
+        <div class="footer">
+            <p>En Mocoa a los _____ días del mes de ___________ de {{ now.year }}</p>
+            <p class="label">AUTORIZACIÓN</p>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                <div>_________________________<br>Firma del solicitante</div>
+                <div style="text-align: right;">_________________________<br>HERNAN WILLIAM BURGOS N.<br>Técnico Operario "JARBOTA"</div>
+            </div>
+            <p style="margin-top: 15px; font-size: 7pt;">Sede Mocoa: ... (información de la sede)</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Autorización de Ingreso</title>
+    <link rel="stylesheet" href="css/autorizacion.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .error-message {
+            color: red;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Formulario de Autorización de Ingreso</h2>
+
+        <div class="search-container">
+            <label for="buscar_codigo_visita">Buscar por Código de Visita:</label>
+            <input type="text" id="buscar_codigo_visita" name="buscar_codigo_visita" placeholder="Ingrese el código de visita">
+            <button type="button" onclick="buscarAutorizacionPorCodigo()">Buscar</button>
+        </div>
+
+        <div id="resultados_busqueda" class="search-results" style="display: none;">
+            <h3>Resultados de la Búsqueda</h3>
+            <div id="detalles_autorizacion">
+            </div>
+            <button type="button" class="pdf-button" onclick="generarPdf()" style="margin-top: 10px; display: none;">Generar PDF</button>
+        </div>
+
+        <form action="/autorizacion" method="POST" enctype="multipart/form-data" id="autorizacionForm">
+            <div class="grid-container">
+                <div class="form-group">
+                    <label for="codigo_visita">Código de Visita:</label>
+                    <input type="text" id="codigo_visita" name="codigo_visita" required readonly>
+                    <div id="codigo_visita_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="identificacion">Identificación:</label>
+                    <input type="text" id="identificacion" name="identificacion" onblur="cargarInformacionAutorizacion()">
+                    <div id="identificacion_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="nombreresponsable">Nombre Responsable:</label>
+                    <input type="text" id="nombreresponsable" name="nombreresponsable">
+                    <div id="nombreresponsable_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="ocupacion">Ocupación:</label>
+                    <input type="text" id="ocupacion" name="ocupacion">
+                    <div id="ocupacion_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="entidad">Entidad:</label>
+                    <input type="text" id="entidad" name="entidad">
+                    <div id="entidad_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="direccion_barrio">Dirección / Barrio:</label>
+                    <input type="text" id="direccion_barrio" name="direccion_barrio">
+                    <div id="direccion_barrio_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="municipio">Municipio:</label>
+                    <input type="text" id="municipio" name="municipio">
+                    <div id="municipio_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono">
+                    <div id="telefono_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="objetivovisita">Objetivo de la Visita:</label>
+                    <textarea id="objetivovisita" name="objetivovisita"></textarea>
+                    <div id="objetivovisita_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="numeropersonas">Número de Personas:</label>
+                    <input type="number" id="numeropersonas" name="numeropersonas" min="1">
+                    <div id="numeropersonas_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="vinculacion">Vinculación (General):</label>
+                    <textarea id="vinculacion" name="vinculacion"></textarea>
+                    <div id="vinculacion_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="hora_llegada">Hora de Llegada:</label>
+                    <input type="time" id="hora_llegada" name="hora_llegada" placeholder="HH:MM">
+                    <div id="hora_llegada_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="hora_salida">Hora de Salida:</label>
+                    <input type="time" id="hora_salida" name="hora_salida" placeholder="HH:MM">
+                    <div id="hora_salida_error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" name="fecha">
+                    <div id="fecha_error" class="error-message"></div>
+                </div>
+                <input type="hidden" id="usuario_id" name="usuario_id" value="{{ session['usuario_id'] if session and 'usuario_id' in session else '' }}">
+            </div>
+            <div class="button-container">
+                <button type="submit">Guardar Autorización</button>
+                <button type="button" class="volver-registro" onclick="window.location.href='/registro'">Volver</button>
+            </div>
+        </form>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        {% if mensaje %}
+            <div id="confirmationAlert" style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 10px; border-radius: 4px; margin-top: 10px;">
+                {{ mensaje }}
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('confirmationAlert').style.display = 'none';
+                    document.getElementById('autorizacionForm').reset();
+                }, 3000);
+            </script>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        
+        function cargarInformacionAutorizacion() {
+            const identificacion = document.getElementById('identificacion').value;
+             const identificacionInput = document.getElementById('identificacion');
+            const identificacionError = document.getElementById('identificacion_error');
+
+            if (!identificacion) {
+                identificacionError.textContent = 'Por favor, ingrese la identificación.';
+                identificacionInput.classList.add('error');
+                return;
+            }  else {
+                identificacionError.textContent = '';
+                identificacionInput.classList.remove('error');
+            }
+            if (identificacion) {
+                fetch('/buscar_autorizacion_info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `identificacion=${identificacion}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById('nombreresponsable').value = data.nombreresponsable || '';
+                        document.getElementById('ocupacion').value = data.ocupacion || '';
+                        document.getElementById('entidad').value = data.entidad || '';
+                        document.getElementById('direccion_barrio').value = data.direccion_barrio || '';
+                        document.getElementById('municipio').value = data.municipio || '';
+                        document.getElementById('telefono').value = data.telefono || '';
+                    } else {
+                        document.getElementById('nombreresponsable').value = '';
+                        document.getElementById('ocupacion').value = '';
+                        document.getElementById('entidad').value = '';
+                        document.getElementById('direccion_barrio').value = '';
+                        document.getElementById('municipio').value = '';
+                        document.getElementById('telefono').value = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al buscar información de autorización:', error);
+                });
+            } else {
+                document.getElementById('nombreresponsable').value = '';
+                document.getElementById('ocupacion').value = '';
+                document.getElementById('entidad').value = '';
+                document.getElementById('direccion_barrio').value = '';
+                document.getElementById('municipio').value = '';
+                document.getElementById('telefono').value = '';
+            }
+        }
+
+        $(function() {
+            $(".autocomplete-input").autocomplete({
+                source: function(request, response) {
+                    var field = $(this.element).data('autocomplete-field');
+                    $.ajax({
+                        url: "/autocomplete",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                            field: field
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2
+            });
+        });
+
+        function buscarAutorizacionPorCodigo() {
+            const codigoVisita = document.getElementById('buscar_codigo_visita').value;
+            if (codigoVisita) {
+                fetch(`/buscar_autorizacion/${codigoVisita}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultadosDiv = document.getElementById('resultados_busqueda');
+                        const detallesDiv = document.getElementById('detalles_autorizacion');
+                        const pdfButton = document.querySelector('.pdf-button');
+                        detallesDiv.innerHTML = '';
+
+                        if (data.error) {
+                            detallesDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
+                            resultadosDiv.style.display = 'block';
+                            if (pdfButton) {
+                                pdfButton.style.display = 'none';
+                            }
+                        } else if (data.autorizacion) {
+                            const autorizacion = data.autorizacion;
+                            let tablaHTML = '<table style="width:100%; border-collapse: collapse;"><tbody>';
+                            tablaHTML += `<tr><td style="font-weight: bold; border: 1px solid #ddd; padding: 8px;">Código de Visita:</td><td style="border: 1px solid #ddd; padding: 8px;">${autorizacion.codigo_visita || 'N/A'}</td></tr>`;
+                            tablaHTML += `<tr><td style="font-weight: bold; border: 1px solid #ddd; padding: 8px;">Nombre del Responsable:</td><td style="border: 1px solid #ddd; padding: 8px;">${autorizacion.nombreresponsable || 'N/A'}</td></tr>`;
+                            tablaHTML += `<tr><td style="font-weight: bold; border: 1px solid #ddd; padding: 8px;">Identificación:</td><td style="border: 1px solid #ddd; padding: 8px;">${autorizacion.identificacion || 'N/A'}</td></tr>`;
+                            tablaHTML += '</tbody></table>';
+                            detallesDiv.innerHTML = tablaHTML;
+                            resultadosDiv.style.display = 'block';
+                            if (pdfButton) {
+                                pdfButton.style.display = 'block';
+                            }
+                            // Almacenar el código de visita para la generación del PDF
+                            pdfButton.dataset.codigoVisita = autorizacion.codigo_visita;
+                        } else {
+                            detallesDiv.innerHTML = `<p>No se encontró ninguna autorización con el código ingresado.</p>`;
+                            resultadosDiv.style.display = 'block';
+                            if (pdfButton) {
+                                pdfButton.style.display = 'none';
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al buscar la autorización:', error);
+                        const resultadosDiv = document.getElementById('resultados_busqueda');
+                        const detallesDiv = document.getElementById('detalles_autorizacion');
+                        const pdfButton = document.querySelector('.pdf-button');
+                        detallesDiv.innerHTML = `<p style="color: red;">Error al comunicarse con el servidor.</p>`;
+                        resultadosDiv.style.display = 'block';
+                        if (pdfButton) {
+                            pdfButton.style.display = 'none';
+                        }
+                    });
+            } else {
+                alert('Por favor, ingrese un código de visita para buscar.');
+            }
+        }
+
+        function generarPdf() {
+            const codigoVisita = document.querySelector('.pdf-button').dataset.codigoVisita;
+            if (codigoVisita) {
+                window.location.href = `/generar_pdf/${codigoVisita}`;
+            } else {
+                alert('Por favor, realice una búsqueda antes de generar el PDF.');
+            }
+        }
+
+        document.getElementById('autorizacionForm').addEventListener('submit', function(event) {
+            let hasErrors = false;
+            const codigoVisitaInput = document.getElementById('codigo_visita');
+            const identificacionInput = document.getElementById('identificacion');
+            const nombreresponsableInput = document.getElementById('nombreresponsable');
+            const objetivovisitaInput = document.getElementById('objetivovisita');
+            const numeropersonasInput = document.getElementById('numeropersonas');
+            const vinculacionInput = document.getElementById('vinculacion');
+            const horaLlegadaInput = document.getElementById('hora_llegada');
+            const horaSalidaInput = document.getElementById('hora_salida');
+            const fechaInput = document.getElementById('fecha');
+
+            const codigoVisitaError = document.getElementById('codigo_visita_error');
+            const identificacionError = document.getElementById('identificacion_error');
+            const nombreresponsableError = document.getElementById('nombreresponsable_error');
+            const objetivovisitaError = document.getElementById('objetivovisita_error');
+            const numeropersonasError = document.getElementById('numeropersonas_error');
+            const vinculacionError = document.getElementById('vinculacion_error');
+             const horaLlegadaError = document.getElementById('hora_llegada_error');
+              const horaSalidaError = document.getElementById('hora_salida_error');
+            const fechaError = document.getElementById('fecha_error');
+
+            // Validar código de visita (1 letra mayúscula y 5 números)
+            const codigoVisitaValue = codigoVisitaInput.value.trim();
+            const codigoVisitaRegex = /^[A-Z]\d{5}$/;
+            if (!codigoVisitaValue) {
+                codigoVisitaError.textContent = 'Por favor, ingrese el código de visita.';
+                codigoVisitaInput.classList.add('error');
+                hasErrors = true;
+            } else if (!codigoVisitaRegex.test(codigoVisitaValue)) {
+                codigoVisitaError.textContent = 'El código debe tener 1 letra mayúscula y 5 números (ej: A12345).';
+                codigoVisitaInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                codigoVisitaError.textContent = '';
+                codigoVisitaInput.classList.remove('error');
+            }
+
+            // Validar identificación
+            
+
+            const identificacionValue = identificacionInput.value.trim();
+            if (!identificacionValue) {
+                identificacionError.textContent = 'Por favor, ingrese la identificación.';
+                identificacionInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                identificacionError.textContent = '';
+                identificacionInput.classList.remove('error');
+            }
+
+            // Validar nombre del responsable
+            const nombreresponsableValue = nombreresponsableInput.value.trim();
+            if (!nombreresponsableValue) {
+                nombreresponsableError.textContent = 'Por favor, ingrese el nombre del responsable.';
+                nombreresponsableInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                nombreresponsableError.textContent = '';
+                nombreresponsableInput.classList.remove('error');
+            }
+
+            // Validar objetivo de la visita
+            const objetivovisitaValue = objetivovisitaInput.value.trim();
+            if (!objetivovisitaValue) {
+                objetivovisitaError.textContent = 'Por favor, ingrese el objetivo de la visita.';
+                objetivovisitaInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                objetivovisitaError.textContent = '';
+                objetivovisitaInput.classList.remove('error');
+            }
+
+            // Validar número de personas
+            const numeropersonasValue = numeropersonasInput.value;
+            if (!numeropersonasValue || parseInt(numeropersonasValue) < 1) {
+                //numeropersonasError.textContent = 'Por favor, ingrese un número de personas válido (1 o más).';
+                numeropersonasInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                numeropersonasError.textContent = '';
+                numeropersonasInput.classList.remove('error');
+            }
+
+            // Validar vinculacion
+            const vinculacionValue = vinculacionInput.value.trim();
+            if (!vinculacionValue) {
+                vinculacionError.textContent = 'Por favor, ingrese la vinculación.';
+                vinculacionInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                vinculacionError.textContent = '';
+                vinculacionInput.classList.remove('error');
+            }
+            
+             // Validar hora de llegada
+            const horaLlegadaValue = horaLlegadaInput.value.trim();
+            if (!horaLlegadaValue) {
+                horaLlegadaError.textContent = 'Por favor, ingrese la hora de llegada.';
+                horaLlegadaInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                horaLlegadaError.textContent = '';
+                horaLlegadaInput.classList.remove('error');
+            }
+
+            // Validar hora de salida
+            const horaSalidaValue = horaSalidaInput.value.trim();
+            if (!horaSalidaValue) {
+                horaSalidaError.textContent = 'Por favor, ingrese la hora de salida.';
+                horaSalidaInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                horaSalidaError.textContent = '';
+                horaSalidaInput.classList.remove('error');
+            }
+
+            // Validar fecha
+            const fechaValue = fechaInput.value.trim();
+            if (!fechaValue) {
+                fechaError.textContent = 'Por favor, ingrese la fecha.';
+                fechaInput.classList.add('error');
+                hasErrors = true;
+            } else {
+                fechaError.textContent = '';
+                fechaInput.classList.remove('error');
+            }
+
+            if (hasErrors) {
+                event.preventDefault(); // Evitar el envío del formulario si hay errores
+            }
+        });
+
+        // Función para generar un código de visita aleatorio
+        function generarCodigoVisita() {
+            const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let codigo = letras.charAt(Math.floor(Math.random() * letras.length)); // Obtener una letra aleatoria
+            for (let i = 0; i < 5; i++) {
+                codigo += Math.floor(Math.random() * 10); // Agregar 5 números aleatorios
+            }
+            return codigo;
+        }
+
+        // Generar código de visita al cargar la página
+        window.onload = function() {
+            const codigoVisitaInput = document.getElementById('codigo_visita');
+            if (codigoVisitaInput) {
+                codigoVisitaInput.value = generarCodigoVisita(); // Establecer el valor del campo
+            }
+        };
+    </script>
+</body>
+</html>

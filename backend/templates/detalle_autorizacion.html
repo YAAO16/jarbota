@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Autorización</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.4; /* Interlineado reducido para más compacidad */
+            font-size: 12px; /* Tamaño de fuente base reducido */
+        }
+
+        .container {
+            max-width: 800px; /* Ancho máximo reducido ligeramente */
+            margin: 15px auto; /* Márgenes superior e inferior reducidos */
+            padding: 20px; /* Relleno reducido */
+            background-color: #fff;
+            border-radius: 8px; /* Radio de borde reducido */
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px; /* Margen inferior reducido */
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 12px; /* Tamaño de fuente del título reducido */
+            border-bottom: 1px solid #e0e0e0; /* Borde inferior más delgado */
+            padding-bottom: 8px; /* Relleno inferior reducido */
+        }
+
+        h3 {
+            color: #3498db;
+            margin-top: 20px; /* Margen superior reducido */
+            margin-bottom: 10px; /* Margen inferior reducido */
+            font-size: 12px; /* Tamaño de fuente del subtítulo reducido */
+            font-weight: 600;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 3px; /* Relleno inferior reducido */
+        }
+
+        .detalle-section {
+            margin-bottom: 20px; /* Margen inferior reducido */
+            padding: 15px; /* Relleno reducido */
+            background-color: #f9f9f9;
+            border-radius: 6px; /* Radio de borde reducido */
+            border: 1px solid #e0e0e0;
+            line-height: 1.5; /* Interlineado reducido */
+            transition: background-color 0.2s ease;
+        }
+
+        .detalle-section:hover {
+            background-color: #f0f0f0;
+        }
+
+        .detalle-section p {
+            margin-bottom: 10px; /* Margen inferior reducido */
+            font-size: 14px; /* Tamaño de fuente del párrafo reducido */
+            color: #555;
+        }
+
+        .detalle-section strong {
+            color: #2c3e50;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px; /* Relleno del enlace reducido */
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px; /* Radio de borde reducido */
+            margin-top: 20px; /* Margen superior reducido */
+            font-size: 12px; /* Tamaño de fuente del enlace reducido */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Sombra reducida */
+        }
+
+        a:hover {
+            background-color: #217dbb;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12); /* Sombra aumentada al hacer hover */
+        }
+
+        a:active {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); /* Sombra reducida al hacer clic */
+            transform: translateY(1px);
+        }
+
+        .estado-pendiente {
+            color: #f39c12;
+            font-weight: 500;
+        }
+
+        .estado-aceptada {
+            color: #2ecc71;
+            font-weight: 500;
+        }
+
+        .estado-rechazada {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+
+        .motivo-estado {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        /* Estilos para la tabla */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px; /* Margen inferior reducido */
+            max-width: 80%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px; /* Margen superior reducido */
+            background-color: #fff;
+            border-radius: 6px; /* Radio de borde reducido */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); /* Sombra reducida */
+            border: 1px solid #e0e0e0;
+            table-layout: fixed;
+            font-size: 12px; /* Tamaño de fuente de la tabla reducido */
+        }
+
+        th, td {
+            padding: 8px; /* Relleno de celda reducido */
+            border-bottom: 1px solid #ecf0f1;
+            text-align: left;
+            vertical-align: middle;
+            word-wrap: break-word;
+            font-size: 12px;
+        }
+
+        thead th {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px; /* Tamaño de fuente del encabezado de la tabla reducido */
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        tbody td:last-child {
+            border-right: none;
+        }
+
+        /* Estilos específicos para columnas */
+        th:nth-child(1), td:nth-child(1) {
+            width: 15%; /* Ancho de la columna "Descripción" aumentado */
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 15%; /* Ancho de la columna "Valor" reducido */
+        }
+
+        /* Estilos para pantallas más pequeñas (móviles) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px; /* Relleno reducido en móviles */
+            }
+            h2 {
+                font-size: 20px; /* Tamaño de fuente del título en móviles reducido */
+                margin-bottom: 15px;
+            }
+            h3 {
+                font-size: 16px; /* Tamaño de fuente del subtítulo en móviles reducido */
+                margin-top: 15px;
+                margin-bottom: 8px;
+            }
+            .detalle-section {
+                padding: 8px; /* Relleno reducido en móviles */
+            }
+            .detalle-section p {
+                font-size: 12px; /* Tamaño de fuente del párrafo en móviles reducido */
+            }
+            a {
+                font-size: 14px; /* Tamaño de fuente del enlace en móviles reducido */
+                padding: 8px 15px; /* Relleno del enlace reducido en móviles */
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 6px; /* Relleno de celda reducido en móviles */
+            }
+             th:nth-child(1), td:nth-child(1) {
+                width: 40%;
+             }
+             th:nth-child(2), td:nth-child(2){
+                width: 60%;
+             }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Detalle de Autorización de Ingreso</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Respuesta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Código de Visita:</strong></td>
+                        <td>{{ autorizacion.codigo_visita }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Identificación:</strong></td>
+                        <td>{{ autorizacion.identificacion }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nombre del Responsable:</strong></td>
+                        <td>{{ autorizacion.nombreresponsable }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ocupación:</strong></td>
+                        <td>{{ autorizacion.ocupacion }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Entidad:</strong></td>
+                        <td>{{ autorizacion.entidad }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dirección:</strong></td>
+                        <td>{{ autorizacion.direccion_barrio }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Municipio:</strong></td>
+                        <td>{{ autorizacion.municipio }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Teléfono:</strong></td>
+                        <td>{{ autorizacion.telefono }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Objetivo de la Visita:</strong></td>
+                        <td>{{ autorizacion.objetivovisita }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Número de Personas:</strong></td>
+                        <td>{{ autorizacion.numeropersonas }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vinculación:</strong></td>
+                        <td>{{ autorizacion.vinculacion }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hora de Llegada:</strong></td>
+                        <td>{{ autorizacion.hora_llegada }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hora de Salida:</strong></td>
+                        <td>{{ autorizacion.hora_salida }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fecha:</strong></td>
+                        <td>{{ autorizacion.fecha }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Estado:</strong></td>
+                        <td><span class="{{ 'estado-' + estado.lower() }}">{{ estado }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Motivo del Estado:</strong></td>
+                        <td><span class="motivo-estado">{{ motivo_estado if motivo_estado else "N/A" }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('autorizacion_list') }}">Volver a la lista</a>
+    </div>
+</body>
+</html>
