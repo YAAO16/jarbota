@@ -4,5 +4,5 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
+COPY .env .
 CMD ["flask","run","--host=0.0.0.0"]
-    
