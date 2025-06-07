@@ -5,3 +5,4 @@ mysql-connector-python
 openpyxl
 reportlab
 Werkzeug
+python-dotenv
