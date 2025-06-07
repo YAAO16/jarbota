@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:5.7
+    container_name: asistencia
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: asistencia
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - practicas
+
+  backend:
+    build: ./backend
+    container_name: BackendAsis
+    restart: always
+    env_file:
+      - ./backend/.env
+    ports:
+      - "5010:5000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/static:/app/static
+      - ./backend/templates:/app/templates
+    depends_on:
+      - db
+    networks:
+      - practicas
+
+networks:
+  practicas:
+    driver: bridge
